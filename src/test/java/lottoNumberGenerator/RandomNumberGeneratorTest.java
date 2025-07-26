@@ -22,8 +22,8 @@ public class RandomNumberGeneratorTest {
     void 랜덤_숫자는_모두_달라야한다() {
         List<Integer> lottoNumbers = numberGenerator.generate();
         boolean isNotSame = true;
-        for(int i = 0; i < lottoNumbers.size() - 1; i++) {
-            if(lottoNumbers.get(i) == lottoNumbers.get(i+1)) {
+        for (int i = 0; i < lottoNumbers.size() - 1; i++) {
+            if (lottoNumbers.get(i) == lottoNumbers.get(i + 1)) {
                 isNotSame = false;
                 break;
             }
@@ -36,8 +36,8 @@ public class RandomNumberGeneratorTest {
     void 랜덤_숫자_범위_확인() {
         List<Integer> lottoNumbers = numberGenerator.generate();
         boolean isMoreThanOneLessThenFortyFive = true;
-        for(int i = 0; i < lottoNumbers.size() ; i++) {
-            if(lottoNumbers.get(i) < 1 || lottoNumbers.get(i) > 45) {
+        for (int i = 0; i < lottoNumbers.size(); i++) {
+            if (lottoNumbers.get(i) < 1 || lottoNumbers.get(i) > 45) {
                 isMoreThanOneLessThenFortyFive = false;
                 break;
             }
