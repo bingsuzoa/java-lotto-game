@@ -1,4 +1,4 @@
-package lotto;
+package domain.lotto;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
@@ -12,10 +12,9 @@ public class WinningLottoTest {
     @DisplayName("정답 번호 외부에서 수정 불가한지 확인")
     void 수정_불가_확인() {
         List<Integer> lottoNumbers = List.of(1, 2, 3, 4, 5, 6);
-        int round = 1;
-        WinningLotto winningLotto = new WinningLotto(round, lottoNumbers);
+        WinningLotto winningLotto = new WinningLotto(lottoNumbers);
         Assertions.assertThrows(UnsupportedOperationException.class, () -> {
-            winningLotto.getWinningNumbers().add(5, 7);
+            winningLotto.getLastWeekWinningLottos().add(5, 7);
         });
     }
 }

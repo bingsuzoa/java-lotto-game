@@ -1,4 +1,4 @@
-package lottoNumberGenerator;
+package domain.lottoNumberGenerator;
 
 import java.util.ArrayList;
 import java.util.Collections;

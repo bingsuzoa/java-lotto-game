@@ -1,5 +1,7 @@
-package lottoNumberGenerator;
+package domain.lottoNumberGenerator;
 
+import domain.lottoNumberGenerator.LottoNumberGenerator;
+import domain.lottoNumberGenerator.RandomNumberGenerator;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
