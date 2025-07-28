@@ -12,7 +12,6 @@ public class Lotto {
         this.lottoNumbers = randomNumbers;
     }
 
-    public static final int LOTTO_PRICE = 1000;
     public static final int LOTTO_NUMBERS_COUNT = 6;
     public static final int MIN_LOTTO_NUMBER = 1;
     public static final int MAX_LOTTO_NUMBER = 45;
@@ -20,7 +19,7 @@ public class Lotto {
     public static final String INVALID_LOTTOS_SIZE = "로또 숫자 갯수가 유효하지 않습니다.";
     private final List<Integer> lottoNumbers;
 
-    private void isValidateRandomNumbers(List<Integer> randomNumbers) {
+    protected void isValidateRandomNumbers(List<Integer> randomNumbers) {
         Set<Integer> uniqueSet = new HashSet<>(randomNumbers);
         for(int lottoNumber : randomNumbers) {
             if(lottoNumber < MIN_LOTTO_NUMBER || lottoNumber > MAX_LOTTO_NUMBER) {
@@ -31,7 +30,7 @@ public class Lotto {
             throw new IllegalArgumentException(INVALID_LOTTOS_SIZE);
         }
     }
-    
+
     public List<Integer> getLottoNumbers() {
         return lottoNumbers;
     }
@@ -47,7 +46,7 @@ public class Lotto {
     }
 
     private int countMatchNumbers(WinningLotto winningLotto) {
-        int totalNumbersCount = 12;
+        int totalNumbersCount = LOTTO_NUMBERS_COUNT * 2;
         List<Integer> winningNumbers = winningLotto.getLastWeekWinningLottos();
 
         Set<Integer> compareSet = new HashSet<>();
