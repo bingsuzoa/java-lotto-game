@@ -6,6 +6,7 @@ import domain.lottoMachine.PurchaseResult;
 import domain.lottoNumberGenerator.LottoNumberGenerator;
 import domain.lottos.LottoStatistics;
 import domain.lottos.Lottos;
+import domain.money.Money;
 
 public class LottoService {
 
@@ -15,7 +16,7 @@ public class LottoService {
 
     private final LottoMachine lottoMachine;
 
-    public PurchaseResult purchaseLottos(int money) {
+    public PurchaseResult purchaseLottos(Money money) {
         return lottoMachine.buyLottos(money);
     }
 
