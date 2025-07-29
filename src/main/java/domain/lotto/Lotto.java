@@ -1,5 +1,6 @@
 package domain.lotto;
 
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -18,6 +19,14 @@ public class Lotto {
     public static final String INVALID_LOTTO_NUMBERS = "로또 숫자 범위가 유효하지 않습니다.";
     public static final String INVALID_LOTTOS_SIZE = "로또 숫자 갯수가 유효하지 않습니다.";
     private final List<Integer> lottoNumbers;
+
+    public static Lotto from(String randomNumbers) {
+        List<Integer> numbers = Arrays.stream(randomNumbers.replace(" ", "").split(","))
+                .map(String::trim)
+                .map(Integer::parseInt)
+                .collect(Collectors.toUnmodifiableList());
+        return new Lotto(numbers);
+    }
 
     private void validateRandomNumbers(List<Integer> randomNumbers) {
         validateNumberRange(randomNumbers);
