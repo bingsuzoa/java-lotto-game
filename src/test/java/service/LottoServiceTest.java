@@ -30,7 +30,6 @@ public class LottoServiceTest {
     @Test
     @DisplayName("로또 구매할 수 있는 최소 금액이 안되면 예외 발생")
     void 로또_구매_최소_금액_미달시_예외() {
-        int money = 900;
         IllegalArgumentException e = Assertions.assertThrows(IllegalArgumentException.class, () -> {
             lottoService.validateSufficientMoney(new Money(900));
         });

@@ -23,10 +23,11 @@ public class LottosTest {
         List<Lotto> issuedLottos = List.of(lotto1, lotto2);
         Lottos lottos = new Lottos(issuedLottos);
 
-        List<Integer> winningNumbers = List.of(1, 2, 3, 6, 23, 24);
+        String winningNumbers = "1,2,3,6,23,24";
         WinningLotto winningLotto = new WinningLotto(winningNumbers);
 
-        LottoStatistics lottoStatistics = lottos.summarizeResults(winningLotto);
+        int lottoPrice = 1000;
+        LottoStatistics lottoStatistics = lottos.summarizeResults(winningLotto, lottoPrice);
         Map<Rank, Integer> matchedRankCounts = lottoStatistics.matchedRankCounts();
         Assertions.assertEquals(matchedRankCounts.get(Rank.FIRST), 0);
         Assertions.assertEquals(matchedRankCounts.get(Rank.SECOND), 0);
@@ -55,9 +56,10 @@ public class LottosTest {
         List<Lotto> issuedLottos = List.of(lotto1, lotto2, lotto3, lotto4, lotto5);
         Lottos lottos = new Lottos(issuedLottos);
 
-        List<Integer> winningNumbers = List.of(1, 2, 3, 4, 5, 6);
+        String winningNumbers = "1,2,3,4,5,6";
         WinningLotto winningLotto = new WinningLotto(winningNumbers);
 
-        Assertions.assertEquals(lottos.summarizeResults(winningLotto).ratio(), 1.0);
+        int lottoPrice = 1000;
+        Assertions.assertEquals(lottos.summarizeResults(winningLotto, lottoPrice).ratio(), 1.0);
     }
 }
