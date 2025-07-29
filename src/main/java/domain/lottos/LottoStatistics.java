@@ -1,4 +1,4 @@
-package domain.lottos;
+package domain.lottoMatcher;
 
 import java.util.Map;
 

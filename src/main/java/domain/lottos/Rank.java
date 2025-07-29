@@ -1,4 +1,4 @@
-package domain.lottos;
+package domain.lottoMatcher;
 
 public enum Rank {
 
