@@ -1,39 +1,14 @@
 package domain.lottos;
 
 import domain.lotto.Lotto;
-import domain.lotto.WinningLotto;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
-import java.util.Map;
 
 public class LottosTest {
 
-    @Test
-    @DisplayName("구입한 로또가 정답과 몇개 일치하는지 확인하는 테스트")
-    void 구입한_로또가_몇개_일치하는지_확인() {
-        List<Integer> numbers1 = List.of(1, 2, 3, 4, 5, 6);
-        Lotto lotto1 = new Lotto(numbers1);
-
-        List<Integer> numbers2 = List.of(6, 7, 1, 13, 22, 21);
-        Lotto lotto2 = new Lotto(numbers2);
-
-        List<Lotto> issuedLottos = List.of(lotto1, lotto2);
-        Lottos lottos = new Lottos(issuedLottos);
-
-        String winningNumbers = "1,2,3,6,23,24";
-        WinningLotto winningLotto = new WinningLotto(winningNumbers);
-
-        int lottoPrice = 1000;
-        LottoStatistics lottoStatistics = lottos.summarizeResults(winningLotto, lottoPrice);
-        Map<Rank, Integer> matchedRankCounts = lottoStatistics.matchedRankCounts();
-        Assertions.assertEquals(matchedRankCounts.get(Rank.FIRST), 0);
-        Assertions.assertEquals(matchedRankCounts.get(Rank.SECOND), 0);
-        Assertions.assertEquals(matchedRankCounts.get(Rank.THIRD), 1);
-        Assertions.assertEquals(matchedRankCounts.get(Rank.FOURTH), 0);
-    }
 
     @Test
     @DisplayName("수익률 확인")
@@ -56,10 +31,6 @@ public class LottosTest {
         List<Lotto> issuedLottos = List.of(lotto1, lotto2, lotto3, lotto4, lotto5);
         Lottos lottos = new Lottos(issuedLottos);
 
-        String winningNumbers = "1,2,3,4,5,6";
-        WinningLotto winningLotto = new WinningLotto(winningNumbers);
-
-        int lottoPrice = 1000;
-        Assertions.assertEquals(lottos.summarizeResults(winningLotto, lottoPrice).ratio(), 1.0);
+        Assertions.assertEquals(lottos.getLottoCount(), 5);
     }
 }

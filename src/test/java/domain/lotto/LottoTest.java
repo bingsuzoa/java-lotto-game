@@ -24,7 +24,7 @@ public class LottoTest {
     @DisplayName("이번주 당첨 번호와 비교해서 몇 개와 동일한지 비교")
     void 당첨_번호와_비교하기() {
         Lotto lotto = new Lotto(numberGenerator.generate());
-        WinningLotto winningLotto = new WinningLotto("1,2,3,4,5,6");
+        Lotto winningLotto = Lotto.from("1,2,3,4,5,6");
         int hittingCount = lotto.getMatchCount(winningLotto);
         Assertions.assertTrue(hittingCount >= 0 && hittingCount <= 6);
     }
