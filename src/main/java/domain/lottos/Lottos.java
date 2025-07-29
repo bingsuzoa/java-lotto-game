@@ -2,6 +2,7 @@ package domain.lottos;
 
 import domain.lotto.Lotto;
 import domain.lotto.WinningLotto;
+import domain.money.Money;
 
 import java.util.HashMap;
 import java.util.List;
@@ -21,24 +22,24 @@ public class Lottos {
 
     public String toFormattedString() {
         StringBuilder sb = new StringBuilder();
-        for(Lotto lotto : lottos) {
+        for (Lotto lotto : lottos) {
             sb.append(lotto.toFormattedString() + "\n");
         }
         return sb.toString();
     }
 
-    public LottoStatistics summarizeResults(WinningLotto winningLotto) {
+    public LottoStatistics summarizeResults(WinningLotto winningLotto, int lottoPrice) {
         Map<Rank, Integer> matchedRankCounts = new HashMap<>();
         for (int matchCount = 3; matchCount <= 6; matchCount++) {
             Rank rank = Rank.valueOf(matchCount);
             matchedRankCounts.put(rank, countMatchedLottosBy(matchCount, winningLotto));
         }
-        double ratio = getRatioOfReturn(matchedRankCounts);
+        double ratio = getRatioOfReturn(matchedRankCounts, lottoPrice);
         return new LottoStatistics(matchedRankCounts, ratio);
     }
 
-    private double getRatioOfReturn(Map<Rank, Integer> matchedRankCounts) {
-        double totalPurchaseAmount = lottos.size() * Lotto.LottoPrice;
+    private double getRatioOfReturn(Map<Rank, Integer> matchedRankCounts, int lottoPrice) {
+        double totalPurchaseAmount = lottos.size() * lottoPrice;
         double winnings = 0;
         for (Rank rank : matchedRankCounts.keySet()) {
             int prize = rank.getPrize();
