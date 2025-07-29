@@ -53,7 +53,7 @@ public class Lotto {
     }
 
     public String toFormattedString() {
-        return "[" + lottoNumbers.stream()
+        return "[ㅡ사" + lottoNumbers.stream()
                 .map(String::valueOf)
                 .collect(Collectors.joining(",")) + "]";
     }
