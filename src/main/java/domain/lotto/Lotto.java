@@ -8,7 +8,7 @@ import java.util.stream.Collectors;
 public class Lotto {
 
     public Lotto(List<Integer> randomNumbers) {
-        isValidateRandomNumbers(randomNumbers);
+        validateRandomNumbers(randomNumbers);
         this.lottoNumbers = randomNumbers;
     }
 
@@ -19,14 +19,14 @@ public class Lotto {
     public static final String INVALID_LOTTOS_SIZE = "로또 숫자 갯수가 유효하지 않습니다.";
     private final List<Integer> lottoNumbers;
 
-    protected void isValidateRandomNumbers(List<Integer> randomNumbers) {
+    private void validateRandomNumbers(List<Integer> randomNumbers) {
         Set<Integer> uniqueSet = new HashSet<>(randomNumbers);
-        for(int lottoNumber : randomNumbers) {
-            if(lottoNumber < MIN_LOTTO_NUMBER || lottoNumber > MAX_LOTTO_NUMBER) {
+        for (int lottoNumber : randomNumbers) {
+            if (lottoNumber < MIN_LOTTO_NUMBER || lottoNumber > MAX_LOTTO_NUMBER) {
                 throw new IllegalArgumentException(INVALID_LOTTO_NUMBERS);
             }
         }
-        if(uniqueSet.size() != LOTTO_NUMBERS_COUNT) {
+        if (uniqueSet.size() != LOTTO_NUMBERS_COUNT) {
             throw new IllegalArgumentException(INVALID_LOTTOS_SIZE);
         }
     }
