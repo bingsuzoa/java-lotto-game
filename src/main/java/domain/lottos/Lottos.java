@@ -1,8 +1,6 @@
 package domain.lottos;
 
 import domain.lotto.Lotto;
-import domain.lotto.WinningLotto;
-import domain.money.Money;
 
 import java.util.HashMap;
 import java.util.List;
@@ -28,29 +26,20 @@ public class Lottos {
         return sb.toString();
     }
 
-    public LottoStatistics summarizeResults(WinningLotto winningLotto, int lottoPrice) {
+    public int getLottoCount() {
+        return lottos.size();
+    }
+
+    public Map<Rank, Integer> summarizeResults(Lotto winningLotto) {
         Map<Rank, Integer> matchedRankCounts = new HashMap<>();
         for (int matchCount = 3; matchCount <= 6; matchCount++) {
             Rank rank = Rank.valueOf(matchCount);
             matchedRankCounts.put(rank, countMatchedLottosBy(matchCount, winningLotto));
         }
-        double ratio = getRatioOfReturn(matchedRankCounts, lottoPrice);
-        return new LottoStatistics(matchedRankCounts, ratio);
+        return matchedRankCounts;
     }
 
-    private double getRatioOfReturn(Map<Rank, Integer> matchedRankCounts, int lottoPrice) {
-        double totalPurchaseAmount = lottos.size() * lottoPrice;
-        double winnings = 0;
-        for (Rank rank : matchedRankCounts.keySet()) {
-            int prize = rank.getPrize();
-            int matchCount = matchedRankCounts.get(rank);
-            winnings += (prize * matchCount);
-        }
-        double value = winnings / totalPurchaseAmount;
-        return Math.round(value * 100.0) / 100.0;
-    }
-
-    private int countMatchedLottosBy(int expectedMatchCount, WinningLotto winningLotto) {
+    private int countMatchedLottosBy(int expectedMatchCount, Lotto winningLotto) {
         int count = 0;
         for (Lotto lotto : lottos) {
             count += toBinaryMatchScore(expectedMatchCount, lotto.getMatchCount(winningLotto));
