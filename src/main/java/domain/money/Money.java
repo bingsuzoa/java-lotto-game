@@ -1,24 +1,22 @@
 package domain.money;
 
-import domain.lotto.Lotto;
-
 public class Money {
 
     public Money(int money) {
-        if(money < Lotto.LottoPrice) {
-            throw new IllegalArgumentException(INSUFFICIENT_PAYMENT_MESSAGE);
+        if (money <= 0) {
+            throw new IllegalArgumentException(INSUFFICIENT_MONEY_MESSAGE);
         }
         this.money = money;
     }
 
-    public static final String INSUFFICIENT_PAYMENT_MESSAGE = "로또를 구매할 수 있는 최소 금액이 모자랍니다.";
+    public static final String INSUFFICIENT_MONEY_MESSAGE = "금액은 1원 이상 내주셔야합니다.";
     private final int money;
 
     public int getMoney() {
         return money;
     }
 
-    public int getChange(int lottoCount) {
-        return money - lottoCount * Lotto.LottoPrice;
+    public int getChange(int lottoCount, int lottoPrice) {
+        return money - lottoCount * lottoPrice;
     }
 }
