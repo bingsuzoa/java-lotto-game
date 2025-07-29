@@ -24,11 +24,11 @@ public class Lotto {
         List<Integer> numbers = Arrays.stream(randomNumbers.replace(" ", "").split(","))
                 .map(String::trim)
                 .map(Integer::parseInt)
-                .collect(Collectors.toUnmodifiableList());
+                .collect(Collectors.toList());
         return new Lotto(numbers);
     }
 
-    private void validateRandomNumbers(List<Integer> randomNumbers) {
+    public void validateRandomNumbers(List<Integer> randomNumbers) {
         validateNumberRange(randomNumbers);
         validateUniqueNumbers(randomNumbers);
     }
@@ -43,7 +43,7 @@ public class Lotto {
 
     private void validateUniqueNumbers(List<Integer> randomNumbers) {
         Set<Integer> uniqueSet = new HashSet<>(randomNumbers);
-        if (uniqueSet.size() != LOTTO_NUMBERS_COUNT) {
+        if (uniqueSet.size() != LOTTO_NUMBERS_COUNT || randomNumbers.size() != LOTTO_NUMBERS_COUNT) {
             throw new IllegalArgumentException(INVALID_LOTTOS_SIZE);
         }
     }
@@ -58,13 +58,13 @@ public class Lotto {
                 .collect(Collectors.joining(",")) + "]";
     }
 
-    public int getMatchCount(WinningLotto winningLotto) {
+    public int getMatchCount(Lotto winningLotto) {
         return countMatchNumbers(winningLotto);
     }
 
-    private int countMatchNumbers(WinningLotto winningLotto) {
+    private int countMatchNumbers(Lotto winningLotto) {
         int totalNumbersCount = LOTTO_NUMBERS_COUNT * 2;
-        List<Integer> winningNumbers = winningLotto.getLastWeekWinningLottos();
+        List<Integer> winningNumbers = winningLotto.getLottoNumbers();
 
         Set<Integer> compareSet = new HashSet<>();
         for (int i = 0; i < LOTTO_NUMBERS_COUNT; i++) {
