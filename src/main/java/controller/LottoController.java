@@ -1,5 +1,6 @@
 package controller;
 
+import domain.lotto.Lotto;
 import domain.lottoMachine.PurchaseResult;
 import domain.money.Money;
 import service.LottoService;
@@ -19,7 +20,7 @@ public class LottoController {
     public void startGame() {
         PurchaseResult purchaseResult = getPurchasableMoney();
         OutputView.printLottos(purchaseResult);
-        OutputView.printResult(lottoService.getResultStatistics(purchaseResult.lottos(), getLatestWinningNumbers()));
+        OutputView.printResult(lottoService.getResultStatistics(purchaseResult.lottos(), getValidWinningLotto()));
     }
 
     private PurchaseResult getPurchasableMoney() {
@@ -58,11 +59,20 @@ public class LottoController {
         }
     }
 
-    private String getLatestWinningNumbers() {
-        String lastWinnings;
+    private Lotto getValidWinningLotto() {
+        Optional<Lotto> lastWinnings;
         do {
-            lastWinnings = InputVIew.getLastWeekWinnings();
-        } while (lastWinnings.equals(InputVIew.INVALID_WINNINGS_INPUT));
-        return lastWinnings;
+            lastWinnings = getValidWinningNumbers();
+        } while (lastWinnings.isEmpty());
+        return lastWinnings.get();
+    }
+
+    private Optional<Lotto> getValidWinningNumbers() {
+        try {
+            return Optional.of(Lotto.from(InputVIew.getLastWeekWinnings()));
+        } catch (IllegalArgumentException e) {
+            OutputView.printMessage(e.getMessage());
+            return Optional.empty();
+        }
     }
 }

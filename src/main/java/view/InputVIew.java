@@ -6,10 +6,7 @@ import java.util.Scanner;
 public class InputVIew {
 
     private static final Scanner scanner = new Scanner(System.in);
-    private static final String INVALID_INPUT = "당첨 번호는 [,]로만 구분 가능하며 6개의 숫자만 입력해주세요.";
-    private static final String INVALID_LOTTO_NUMBER = "당첨 번호는 1~45의 숫자만 가능합니다.";
-
-    public static final String INVALID_WINNINGS_INPUT = "invalid winnings input";
+    private static final String INVALID_INPUT = "입력 형태가 올바르지 않습니다. 숫자 사이에 [,]의 입력만 가능합니다. ";
 
     public static int getMoney() {
         int invalidMoneyInput = -1;
@@ -25,29 +22,17 @@ public class InputVIew {
         }
     }
 
-    public static String getLastWeekWinnings() {
-        try {
-            OutputView.printMessage(OutputView.LAST_WEEK_WINNING_NUMBERS_MESSAGE);
-            String lastWeekWinnings = scanner.nextLine();
-            isValidLottoNumbers(lastWeekWinnings);
-            return lastWeekWinnings;
-        } catch (IllegalArgumentException e) {
-            OutputView.printMessage(e.getMessage());
-            return INVALID_WINNINGS_INPUT;
-        }
+    public static String getLastWeekWinnings() throws IllegalArgumentException {
+        OutputView.printMessage(OutputView.LAST_WEEK_WINNING_NUMBERS_MESSAGE);
+        String lastWeekWinnings = scanner.nextLine();
+        isValidLottoNumbers(lastWeekWinnings);
+        return lastWeekWinnings;
     }
 
     private static void isValidLottoNumbers(String input) {
         input = input.replace(" ", "");
-        if (!input.matches("^\\d+(,\\d+){5}$")) {
+        if (!input.matches("^\\d+(,\\d+)*$")) {
             throw new IllegalArgumentException(INVALID_INPUT);
-        }
-
-        for (String value : input.split(",")) {
-            int lottoNumber = Integer.parseInt(value);
-            if (lottoNumber < 1 || lottoNumber > 45) {
-                throw new IllegalArgumentException(INVALID_LOTTO_NUMBER);
-            }
         }
     }
 }
