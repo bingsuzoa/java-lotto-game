@@ -58,6 +58,10 @@ public class Lotto {
                 .collect(Collectors.joining(",")) + "]";
     }
 
+    public boolean isMatchBonusBall(BonusBall bonusNumber) {
+        return lottoNumbers.contains(bonusNumber.getBonusNumber());
+    }
+
     public int getMatchCount(Lotto winningLotto) {
         return countMatchNumbers(winningLotto);
     }
