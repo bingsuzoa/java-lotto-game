@@ -9,7 +9,7 @@ public class Lotto {
 
     public Lotto(List<Integer> randomNumbers) {
         validateRandomNumbers(randomNumbers);
-        this.lottoNumbers = randomNumbers;
+        this.lottoNumbers = List.copyOf(randomNumbers);
     }
 
     public static final int LOTTO_NUMBERS_COUNT = 6;
@@ -20,12 +20,20 @@ public class Lotto {
     private final List<Integer> lottoNumbers;
 
     private void validateRandomNumbers(List<Integer> randomNumbers) {
-        Set<Integer> uniqueSet = new HashSet<>(randomNumbers);
+        validateNumberRange(randomNumbers);
+        validateUniqueNumbers(randomNumbers);
+    }
+
+    private void validateNumberRange(List<Integer> randomNumbers) {
         for (int lottoNumber : randomNumbers) {
             if (lottoNumber < MIN_LOTTO_NUMBER || lottoNumber > MAX_LOTTO_NUMBER) {
                 throw new IllegalArgumentException(INVALID_LOTTO_NUMBERS);
             }
         }
+    }
+
+    private void validateUniqueNumbers(List<Integer> randomNumbers) {
+        Set<Integer> uniqueSet = new HashSet<>(randomNumbers);
         if (uniqueSet.size() != LOTTO_NUMBERS_COUNT) {
             throw new IllegalArgumentException(INVALID_LOTTOS_SIZE);
         }
