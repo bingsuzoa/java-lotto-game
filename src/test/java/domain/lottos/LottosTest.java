@@ -1,5 +1,6 @@
 package domain.lottos;
 
+import domain.lotto.BonusBall;
 import domain.lotto.Lotto;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
@@ -25,9 +26,11 @@ public class LottosTest {
         String winningNumbers = "1,2,3,6,23,24";
         Lotto winningLotto = Lotto.from(winningNumbers);
 
-        Map<Rank, Integer> matchedRankCounts = lottos.summarizeResults(winningLotto);
+        BonusBall bonusBall = new BonusBall(7, winningLotto);
+        Map<Rank, Integer> matchedRankCounts = lottos.summarizeResults(winningLotto, bonusBall);
         Assertions.assertEquals(matchedRankCounts.get(Rank.FIRST), 0);
         Assertions.assertEquals(matchedRankCounts.get(Rank.SECOND), 0);
+        Assertions.assertEquals(matchedRankCounts.get(Rank.SECOND_BONUS), 0);
         Assertions.assertEquals(matchedRankCounts.get(Rank.THIRD), 1);
         Assertions.assertEquals(matchedRankCounts.get(Rank.FOURTH), 0);
     }

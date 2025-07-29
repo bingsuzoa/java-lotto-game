@@ -1,5 +1,6 @@
 package service;
 
+import domain.lotto.BonusBall;
 import domain.lotto.Lotto;
 import domain.lotto.lottoPricePolicy.FixedLottoPricePolicy;
 import domain.lotto.lottoPricePolicy.LottoPricePolicy;
@@ -54,7 +55,9 @@ public class LottoServiceTest {
 
         String winningNumbers = "1,2,3,4,5,6";
         Lotto winningLotto = Lotto.from(winningNumbers);
-        Assertions.assertEquals(lottoService.getResultStatistics(lottos, winningLotto).ratio(), 1.0);
+
+        BonusBall bonusBall = new BonusBall(7, winningLotto);
+        Assertions.assertEquals(lottoService.getResultStatistics(lottos, winningLotto, bonusBall).ratio(), 1.0);
     }
 
 

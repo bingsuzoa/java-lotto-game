@@ -1,5 +1,6 @@
 package service;
 
+import domain.lotto.BonusBall;
 import domain.lotto.Lotto;
 import domain.lotto.lottoPricePolicy.LottoPricePolicy;
 import domain.lottoMachine.LottoMachine;
@@ -38,8 +39,9 @@ public class LottoService {
         return lottoMachine.buyLottos(money, lottoPricePolicy.getLottoPrice());
     }
 
-    public LottoStatistics getResultStatistics(Lottos lottos, Lotto winningLotto) {
-        Map<Rank, Integer> matchedRankCounts = lottos.summarizeResults(winningLotto);
+    public LottoStatistics getResultStatistics(Lottos lottos, Lotto winningLotto, BonusBall bonusBall) {
+        Map<Rank, Integer> matchedRankCounts = lottos.summarizeResults(winningLotto, bonusBall);
+        matchedRankCounts.remove(Rank.MISS);
         double ratio = getRatioOfReturn(matchedRankCounts, lottos.getLottoCount());
         return new LottoStatistics(matchedRankCounts, ratio);
     }
