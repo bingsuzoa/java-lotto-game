@@ -17,20 +17,39 @@ public class LottoController {
     private final LottoService lottoService;
 
     public void startGame() {
-        PurchaseResult purchaseResult = lottoService.purchaseLottos(getPurchasbleMoney());
+        PurchaseResult purchaseResult = getPurchasableMoney();
         OutputView.printLottos(purchaseResult);
         OutputView.printResult(lottoService.getResultStatistics(purchaseResult.lottos(), getLatestWinningNumbers()));
     }
 
-    private Money getPurchasbleMoney() {
+    private PurchaseResult getPurchasableMoney() {
+        Optional<PurchaseResult> purchaseResult;
+        do {
+            purchaseResult = inputPurchasableMoney();
+        } while(purchaseResult.isEmpty());
+        return purchaseResult.get();
+    }
+
+    private Optional<PurchaseResult> inputPurchasableMoney() {
+        try {
+            Money money = getPositiveMoney();
+            lottoService.validateSufficientMoney(money);
+            return Optional.of(lottoService.purchaseLottos(money));
+        } catch (IllegalArgumentException e) {
+            OutputView.printMessage(e.getMessage());
+            return Optional.empty();
+        }
+    }
+
+    private Money getPositiveMoney() {
         Optional<Money> money;
         do {
-            money = inputPurchasableMoney();
+            money = inputPositiveMoney();
         } while (money.isEmpty());
         return money.get();
     }
 
-    private Optional<Money> inputPurchasableMoney() {
+    private Optional<Money> inputPositiveMoney() {
         try {
             return Optional.of(new Money(InputVIew.getMoney()));
         } catch (IllegalArgumentException e) {
