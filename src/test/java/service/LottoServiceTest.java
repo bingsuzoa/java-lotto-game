@@ -15,6 +15,8 @@ import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
+import static service.LottoService.INSUFFICIENT_LOTTO_PRICE;
+
 public class LottoServiceTest {
 
     private LottoNumberGenerator lottoNumberGenerator = new RandomNumberGenerator();
@@ -51,7 +53,8 @@ public class LottoServiceTest {
         Lottos lottos = new Lottos(issuedLottos);
 
         String winningNumbers = "1,2,3,4,5,6";
-        Assertions.assertEquals(lottoService.getResultStatistics(lottos, winningNumbers).ratio(), 1.0);
+        Lotto winningLotto = Lotto.from(winningNumbers);
+        Assertions.assertEquals(lottoService.getResultStatistics(lottos, winningLotto).ratio(), 1.0);
     }
 
 
@@ -60,8 +63,8 @@ public class LottoServiceTest {
     @DisplayName("로또 구매할 수 있는 최소 금액이 안되면 예외 발생")
     void 로또_구매_최소_금액_미달시_예외() {
         IllegalArgumentException e = Assertions.assertThrows(IllegalArgumentException.class, () -> {
-            lottoService.validateSufficientMoney(new Money(900));
+            lottoService.validateSufficientMoney(new Money(lottoService.getLottoPrice() -1));
         });
-        Assertions.assertEquals(e.getMessage(), LottoMachine.INSUFFICIENT_LOTTO_PRICE);
+        Assertions.assertEquals(e.getMessage(), INSUFFICIENT_LOTTO_PRICE);
     }
 }
