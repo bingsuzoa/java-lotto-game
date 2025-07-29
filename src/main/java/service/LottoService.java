@@ -1,6 +1,7 @@
 package service;
 
 import domain.lotto.WinningLotto;
+import domain.lotto.lottoPricePolicy.LottoPricePolicy;
 import domain.lottoMachine.LottoMachine;
 import domain.lottoMachine.PurchaseResult;
 import domain.lottoNumberGenerator.LottoNumberGenerator;
@@ -10,8 +11,11 @@ import domain.money.Money;
 
 public class LottoService {
 
-    public LottoService(LottoNumberGenerator lottoNumberGenerator) {
-        this.lottoMachine = new LottoMachine(lottoNumberGenerator);
+    public LottoService(
+            LottoNumberGenerator lottoNumberGenerator,
+            LottoPricePolicy lottoPricePolicy
+    ) {
+        this.lottoMachine = new LottoMachine(lottoNumberGenerator, lottoPricePolicy);
     }
 
     private final LottoMachine lottoMachine;
@@ -20,8 +24,12 @@ public class LottoService {
         return lottoMachine.buyLottos(money);
     }
 
+    public void validateSufficientMoney(Money money) {
+        lottoMachine.validateSufficientMoney(money);
+    }
+
     public LottoStatistics getResultStatistics(Lottos lottos, String winnings) {
-        WinningLotto winningLotto = WinningLotto.ofLastWeekWinningNumbers(winnings);
-        return lottos.summarizeResults(winningLotto);
+        WinningLotto winningLotto = new WinningLotto(winnings);
+        return lottos.summarizeResults(winningLotto, lottoMachine.getLottoPrice());
     }
 }
