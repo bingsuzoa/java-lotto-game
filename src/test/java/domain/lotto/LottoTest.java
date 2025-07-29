@@ -29,6 +29,13 @@ public class LottoTest {
         Assertions.assertTrue(hittingCount >= 0 && hittingCount <= 6);
     }
 
+    @Test
+    @DisplayName("사용자로부터 로또 당첨 번호 입력받아 로또 객체 생성")
+    void 사용자로부터_로또_당첨_번호_입력받아_로또_객체_셍성() {
+        Lotto lotto = Lotto.from("1,2,3,4,5,6");
+        Assertions.assertEquals(lotto.getLottoNumbers().size(), 6);
+    }
+
     /// ///예외 테스트
     @Test
     @DisplayName("랜덤 숫자가 1 ~ 45 범위가 아닌 경우 예외 발생")
@@ -45,6 +52,24 @@ public class LottoTest {
         List<Integer> randomNumbers = List.of(1, 2, 3, 4, 5, 6, 7);
         IllegalArgumentException e = Assertions.assertThrows(IllegalArgumentException.class, () ->
                 new Lotto(randomNumbers));
+        Assertions.assertEquals(e.getMessage(), Lotto.INVALID_LOTTOS_SIZE);
+    }
+
+    @Test
+    @DisplayName("문자열로 로또 생성 시 랜덤 숫자가 1~45 범위가 아니면 예외 발생")
+    void 문자열_랜덤_숫자_범위_확인() {
+        String randomNumbers = "0,1,2,3,4,5";
+        IllegalArgumentException e = Assertions.assertThrows(IllegalArgumentException.class, () ->
+                Lotto.from(randomNumbers));
+        Assertions.assertEquals(e.getMessage(), Lotto.INVALID_LOTTO_NUMBERS);
+    }
+
+    @Test
+    @DisplayName("문자열로 로또 생성 시 랜덤 숫자 갯수가 허용된 갯수가 아닌 경우 예외 발생")
+    void 문자열_랜덤_숫자가_허용된_갯수인지_확인() {
+        String randomNumbers = "1,2,3,4,5,6,7";
+        IllegalArgumentException e = Assertions.assertThrows(IllegalArgumentException.class, () ->
+                Lotto.from(randomNumbers));
         Assertions.assertEquals(e.getMessage(), Lotto.INVALID_LOTTOS_SIZE);
     }
 }
