@@ -6,6 +6,8 @@ import service.LottoService;
 import view.InputVIew;
 import view.OutputView;
 
+import java.util.Optional;
+
 public class LottoController {
 
     public LottoController(LottoService lottoService) {
@@ -13,7 +15,6 @@ public class LottoController {
     }
 
     private final LottoService lottoService;
-    private static final Money INSUFFICENT_MONEY = null;
 
     public void startGame() {
         PurchaseResult purchaseResult = lottoService.purchaseLottos(getPurchasbleMoney());
@@ -22,19 +23,19 @@ public class LottoController {
     }
 
     private Money getPurchasbleMoney() {
-        Money money;
+        Optional<Money> money;
         do {
             money = inputPurchasableMoney();
-        } while (money == INSUFFICENT_MONEY);
-        return money;
+        } while (money.isEmpty());
+        return money.get();
     }
 
-    private Money inputPurchasableMoney() {
+    private Optional<Money> inputPurchasableMoney() {
         try {
-            return new Money(InputVIew.getMoney());
+            return Optional.of(new Money(InputVIew.getMoney()));
         } catch (IllegalArgumentException e) {
             OutputView.printMessage(e.getMessage());
-            return INSUFFICENT_MONEY;
+            return Optional.empty();
         }
     }
 
