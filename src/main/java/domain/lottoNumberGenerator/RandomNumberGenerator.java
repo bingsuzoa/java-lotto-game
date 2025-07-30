@@ -1,6 +1,7 @@
 package domain.lottoNumberGenerator;
 
 import domain.lotto.Lotto;
+import domain.lotto.LottoRule;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -12,7 +13,7 @@ public class RandomNumberGenerator implements LottoNumberGenerator {
     public List<Integer> generate() {
         List<Integer> numbers = new ArrayList<>();
 
-        for (int i = Lotto.MIN_LOTTO_NUMBER; i <= Lotto.MAX_LOTTO_NUMBER; i++) {
+        for (int i = LottoRule.MIN_NUMBER.value(); i <= LottoRule.MAX_NUMBER.value(); i++) {
             numbers.add(i);
         }
 

@@ -13,6 +13,6 @@ public class Main {
         LottoPricePolicy lottoPricePolicy = new FixedLottoPricePolicy();
         LottoService lottoService = new LottoService(numberGenerator, lottoPricePolicy);
         LottoController lottoController = new LottoController(lottoService);
-        lottoController.startGame();
+        lottoController.getInputAndStartGame();
     }
 }

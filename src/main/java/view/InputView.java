@@ -3,22 +3,22 @@ package view;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
-public class InputVIew {
+public class InputView {
 
     private static final Scanner scanner = new Scanner(System.in);
     private static final String INVALID_INPUT = "입력 형태가 올바르지 않습니다. 숫자 사이에 [,]의 입력만 가능합니다. ";
 
-    public static int getMoney() {
-        int invalidMoneyInput = -1;
+    public static int getNumberInput(String inputMessage) {
+        int invalidNumberInput = -1;
         try {
-            OutputView.printGetMoney();
-            int money = scanner.nextInt();
+            OutputView.printMessage(inputMessage);
+            int number = scanner.nextInt();
             scanner.nextLine();
-            return money;
+            return number;
         } catch (InputMismatchException e) {
             scanner.nextLine();
             OutputView.printMessage(OutputView.INPUTVIEW_INVALID_GET_MONEY_TYPE);
-            return invalidMoneyInput;
+            return invalidNumberInput;
         }
     }
 

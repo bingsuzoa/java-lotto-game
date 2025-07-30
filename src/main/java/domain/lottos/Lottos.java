@@ -1,5 +1,6 @@
 package domain.lottos;
 
+import domain.lotto.BonusBall;
 import domain.lotto.Lotto;
 
 import java.util.HashMap;
@@ -30,24 +31,34 @@ public class Lottos {
         return lottos.size();
     }
 
-    public Map<Rank, Integer> summarizeResults(Lotto winningLotto) {
+    public Map<Rank, Integer> summarizeResults(Lotto winningLotto, BonusBall bonusBall) {
         Map<Rank, Integer> matchedRankCounts = new HashMap<>();
-        for (int matchCount = 3; matchCount <= 6; matchCount++) {
-            Rank rank = Rank.valueOf(matchCount);
-            matchedRankCounts.put(rank, countMatchedLottosBy(matchCount, winningLotto));
+        int initCount = 0;
+        for (Rank rank : Rank.values()) {
+            matchedRankCounts.put(rank, initCount);
         }
+        return countMatchedLottosBy(winningLotto, bonusBall, matchedRankCounts);
+    }
+
+    private Map<Rank, Integer> countMatchedLottosBy(Lotto winningLotto, BonusBall bonusBall, Map<Rank, Integer> matchedRankCounts) {
+        for (Lotto lotto : lottos) {
+            MatchedResult matchedResult = getMatchedResult(lotto, winningLotto, bonusBall);
+            Rank rank = Rank.valueOf(matchedResult.matched(), matchedResult.isBonusHit());
+            matchedRankCounts.computeIfPresent(rank, (k, v) -> v + 1);
+        }
+        matchedRankCounts.remove(Rank.MISS);
         return matchedRankCounts;
     }
 
-    private int countMatchedLottosBy(int expectedMatchCount, Lotto winningLotto) {
-        int count = 0;
-        for (Lotto lotto : lottos) {
-            count += toBinaryMatchScore(expectedMatchCount, lotto.getMatchCount(winningLotto));
-        }
-        return count;
+    private MatchedResult getMatchedResult(Lotto lotto, Lotto winningLotto, BonusBall bonusBall) {
+        int matched = lotto.getMatchCount(winningLotto);
+        return new MatchedResult(matched, isBonusHit(lotto, matched, bonusBall));
     }
 
-    private int toBinaryMatchScore(int expected, int actual) {
-        return expected == actual ? 1 : 0;
+    private boolean isBonusHit(Lotto lotto, int matched, BonusBall bonusBall) {
+        if (matched == Rank.SECOND_BONUS.getMatchCount()) {
+            return lotto.isContainNumber(bonusBall.getBonusBall());
+        }
+        return false;
     }
 }
