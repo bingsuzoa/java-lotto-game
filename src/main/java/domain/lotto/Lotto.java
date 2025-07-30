@@ -13,11 +13,9 @@ public class Lotto {
         this.lottoNumbers = List.copyOf(randomNumbers);
     }
 
-    public static final int LOTTO_NUMBERS_COUNT = 6;
-    public static final int MIN_LOTTO_NUMBER = 1;
-    public static final int MAX_LOTTO_NUMBER = 45;
     public static final String INVALID_LOTTO_NUMBERS = "로또 숫자 범위가 유효하지 않습니다.";
     public static final String INVALID_LOTTOS_SIZE = "로또 숫자 갯수가 유효하지 않습니다.";
+    public static final String INVALID_BONUS_BALL = "당첨 로또에 이미 존재하는 숫자입니다.";
     private final List<Integer> lottoNumbers;
 
     public static Lotto from(String randomNumbers) {
@@ -35,7 +33,7 @@ public class Lotto {
 
     private void validateNumberRange(List<Integer> randomNumbers) {
         for (int lottoNumber : randomNumbers) {
-            if (lottoNumber < MIN_LOTTO_NUMBER || lottoNumber > MAX_LOTTO_NUMBER) {
+            if (lottoNumber < LottoRule.MIN_NUMBER.value() || lottoNumber > LottoRule.MAX_NUMBER.value()) {
                 throw new IllegalArgumentException(INVALID_LOTTO_NUMBERS);
             }
         }
@@ -43,7 +41,7 @@ public class Lotto {
 
     private void validateUniqueNumbers(List<Integer> randomNumbers) {
         Set<Integer> uniqueSet = new HashSet<>(randomNumbers);
-        if (uniqueSet.size() != LOTTO_NUMBERS_COUNT || randomNumbers.size() != LOTTO_NUMBERS_COUNT) {
+        if (uniqueSet.size() != LottoRule.LOTTO_COUNT.value() || randomNumbers.size() != LottoRule.LOTTO_COUNT.value()) {
             throw new IllegalArgumentException(INVALID_LOTTOS_SIZE);
         }
     }
@@ -53,13 +51,19 @@ public class Lotto {
     }
 
     public String toFormattedString() {
-        return "[ㅡ사" + lottoNumbers.stream()
+        return "[" + lottoNumbers.stream()
                 .map(String::valueOf)
                 .collect(Collectors.joining(",")) + "]";
     }
 
-    public boolean isMatchBonusBall(BonusBall bonusNumber) {
-        return lottoNumbers.contains(bonusNumber.getBonusNumber());
+    public void validateBonusNumber(int bonusNumber) {
+        if(lottoNumbers.contains(bonusNumber)) {
+            throw new IllegalArgumentException(INVALID_BONUS_BALL);
+        }
+    }
+
+    public boolean isContainNumber(int number) {
+        return lottoNumbers.contains(number);
     }
 
     public int getMatchCount(Lotto winningLotto) {
@@ -67,11 +71,11 @@ public class Lotto {
     }
 
     private int countMatchNumbers(Lotto winningLotto) {
-        int totalNumbersCount = LOTTO_NUMBERS_COUNT * 2;
+        int totalNumbersCount = LottoRule.LOTTO_COUNT.value() * 2;
         List<Integer> winningNumbers = winningLotto.getLottoNumbers();
 
         Set<Integer> compareSet = new HashSet<>();
-        for (int i = 0; i < LOTTO_NUMBERS_COUNT; i++) {
+        for (int i = 0; i < LottoRule.LOTTO_COUNT.value(); i++) {
             compareSet.add(lottoNumbers.get(i));
             compareSet.add(winningNumbers.get(i));
         }
