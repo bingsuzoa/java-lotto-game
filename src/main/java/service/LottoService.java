@@ -41,7 +41,6 @@ public class LottoService {
 
     public LottoStatistics getResultStatistics(Lottos lottos, Lotto winningLotto, BonusBall bonusBall) {
         Map<Rank, Integer> matchedRankCounts = lottos.summarizeResults(winningLotto, bonusBall);
-        matchedRankCounts.remove(Rank.MISS);
         double ratio = getRatioOfReturn(matchedRankCounts, lottos.getLottoCount());
         return new LottoStatistics(matchedRankCounts, ratio);
     }

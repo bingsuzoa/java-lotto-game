@@ -26,12 +26,69 @@ public class LottosTest {
         String winningNumbers = "1,2,3,6,23,24";
         Lotto winningLotto = Lotto.from(winningNumbers);
 
-        BonusBall bonusBall = new BonusBall(7, winningLotto);
+        BonusBall bonusBall = new BonusBall(7);
         Map<Rank, Integer> matchedRankCounts = lottos.summarizeResults(winningLotto, bonusBall);
         Assertions.assertEquals(matchedRankCounts.get(Rank.FIRST), 0);
         Assertions.assertEquals(matchedRankCounts.get(Rank.SECOND), 0);
         Assertions.assertEquals(matchedRankCounts.get(Rank.SECOND_BONUS), 0);
         Assertions.assertEquals(matchedRankCounts.get(Rank.THIRD), 1);
+        Assertions.assertEquals(matchedRankCounts.get(Rank.FOURTH), 0);
+    }
+
+    @Test
+    @DisplayName("로또 1등 당첨 확인 테스트")
+    void 로또_1등_당첨_비교() {
+        List<Integer> numbers1 = List.of(1, 2, 3, 4, 5, 6);
+        Lotto lotto1 = new Lotto(numbers1);
+        Lottos lottos = new Lottos(List.of(lotto1));
+
+        String winningNumbers = "1,2,3,4,5,6";
+        Lotto winningLotto = Lotto.from(winningNumbers);
+
+        BonusBall bonusBall = new BonusBall(7);
+        Map<Rank, Integer> matchedRankCounts = lottos.summarizeResults(winningLotto, bonusBall);
+        Assertions.assertEquals(matchedRankCounts.get(Rank.FIRST), 1);
+        Assertions.assertEquals(matchedRankCounts.get(Rank.SECOND), 0);
+        Assertions.assertEquals(matchedRankCounts.get(Rank.SECOND_BONUS), 0);
+        Assertions.assertEquals(matchedRankCounts.get(Rank.THIRD), 0);
+        Assertions.assertEquals(matchedRankCounts.get(Rank.FOURTH), 0);
+    }
+
+    @Test
+    @DisplayName("로또 2등 + 보너스 번호 미당첨 확인 테스트")
+    void 로또2등_보너스번호_미당첨() {
+        List<Integer> numbers1 = List.of(1, 2, 3, 4, 5, 8);
+        Lotto lotto1 = new Lotto(numbers1);
+        Lottos lottos = new Lottos(List.of(lotto1));
+
+        String winningNumbers = "1,2,3,4,5,6";
+        Lotto winningLotto = Lotto.from(winningNumbers);
+
+        BonusBall bonusBall = new BonusBall(7);
+        Map<Rank, Integer> matchedRankCounts = lottos.summarizeResults(winningLotto, bonusBall);
+        Assertions.assertEquals(matchedRankCounts.get(Rank.FIRST), 0);
+        Assertions.assertEquals(matchedRankCounts.get(Rank.SECOND), 1);
+        Assertions.assertEquals(matchedRankCounts.get(Rank.SECOND_BONUS), 0);
+        Assertions.assertEquals(matchedRankCounts.get(Rank.THIRD), 0);
+        Assertions.assertEquals(matchedRankCounts.get(Rank.FOURTH), 0);
+    }
+
+    @Test
+    @DisplayName("로또 2등 + 보너스 번호 당첨 확인 테스트")
+    void 로또2등_보너스번호_당첨() {
+        List<Integer> numbers1 = List.of(1, 2, 3, 4, 5, 7);
+        Lotto lotto1 = new Lotto(numbers1);
+        Lottos lottos = new Lottos(List.of(lotto1));
+
+        String winningNumbers = "1,2,3,4,5,6";
+        Lotto winningLotto = Lotto.from(winningNumbers);
+
+        BonusBall bonusBall = new BonusBall(7);
+        Map<Rank, Integer> matchedRankCounts = lottos.summarizeResults(winningLotto, bonusBall);
+        Assertions.assertEquals(matchedRankCounts.get(Rank.FIRST), 0);
+        Assertions.assertEquals(matchedRankCounts.get(Rank.SECOND), 0);
+        Assertions.assertEquals(matchedRankCounts.get(Rank.SECOND_BONUS), 1);
+        Assertions.assertEquals(matchedRankCounts.get(Rank.THIRD), 0);
         Assertions.assertEquals(matchedRankCounts.get(Rank.FOURTH), 0);
     }
 

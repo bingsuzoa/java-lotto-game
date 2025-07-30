@@ -56,7 +56,7 @@ public class LottoServiceTest {
         String winningNumbers = "1,2,3,4,5,6";
         Lotto winningLotto = Lotto.from(winningNumbers);
 
-        BonusBall bonusBall = new BonusBall(7, winningLotto);
+        BonusBall bonusBall = new BonusBall(7);
         Assertions.assertEquals(lottoService.getResultStatistics(lottos, winningLotto, bonusBall).ratio(), 1.0);
     }
 

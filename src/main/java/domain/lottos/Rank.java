@@ -26,11 +26,17 @@ public enum Rank {
     }
 
     public static Rank valueOf(int matchCount, boolean isBonusHit) {
-        if (matchCount == 3 && !isBonusHit) return FOURTH;
-        if (matchCount == 4 && !isBonusHit) return THIRD;
-        if (matchCount == 5 && !isBonusHit) return SECOND;
-        if (matchCount == 5 && isBonusHit) return SECOND_BONUS;
-        if (matchCount == 6 && !isBonusHit) return FIRST;
-        return MISS;
+        switch (matchCount) {
+            case 6:
+                return FIRST;
+            case 5:
+                return isBonusHit ? SECOND_BONUS : SECOND;
+            case 4:
+                return THIRD;
+            case 3:
+                return FOURTH;
+            default:
+                return MISS;
+        }
     }
 }
