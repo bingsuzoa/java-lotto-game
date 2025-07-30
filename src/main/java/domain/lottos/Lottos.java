@@ -32,20 +32,21 @@ public class Lottos {
     }
 
     public Map<Rank, Integer> summarizeResults(Lotto winningLotto, BonusBall bonusBall) {
-        return countMatchedLottosBy(winningLotto, bonusBall);
-    }
-
-    private Map<Rank, Integer> countMatchedLottosBy(Lotto winningLotto, BonusBall bonusBall) {
         Map<Rank, Integer> matchedRankCounts = new HashMap<>();
         int initCount = 0;
         for (Rank rank : Rank.values()) {
             matchedRankCounts.put(rank, initCount);
         }
+        return countMatchedLottosBy(winningLotto, bonusBall, matchedRankCounts);
+    }
+
+    private Map<Rank, Integer> countMatchedLottosBy(Lotto winningLotto, BonusBall bonusBall, Map<Rank, Integer> matchedRankCounts) {
         for (Lotto lotto : lottos) {
             MatchedResult matchedResult = getMatchedResult(lotto, winningLotto, bonusBall);
             Rank rank = Rank.valueOf(matchedResult.matched(), matchedResult.isBonusHit());
             matchedRankCounts.computeIfPresent(rank, (k, v) -> v + 1);
         }
+        matchedRankCounts.remove(Rank.MISS);
         return matchedRankCounts;
     }
 
@@ -56,7 +57,7 @@ public class Lottos {
 
     private boolean isBonusHit(Lotto lotto, int matched, BonusBall bonusBall) {
         if (matched == Rank.SECOND_BONUS.getMatchCount()) {
-            return lotto.isMatchBonusBall(bonusBall);
+            return lotto.isContainNumber(bonusBall.getBonusBall());
         }
         return false;
     }
