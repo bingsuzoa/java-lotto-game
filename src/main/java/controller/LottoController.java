@@ -18,7 +18,7 @@ public class LottoController {
 
     private final LottoService lottoService;
 
-    public void startGame() {
+    public void getInputAndStartGame() {
         PurchaseResult purchaseResult = getPurchasableMoney();
         OutputView.printLottos(purchaseResult);
         Lotto winningLotto = getValidWinningLotto();
@@ -82,14 +82,16 @@ public class LottoController {
     private BonusBall getValidBonusBall(Lotto winningLotto) {
         Optional<BonusBall> bonusBall;
         do {
-            bonusBall = inputValidBonusBall(winningLotto);
+            bonusBall = inputBonusBall(winningLotto);
         } while (bonusBall.isEmpty());
         return bonusBall.get();
     }
 
-    private Optional<BonusBall> inputValidBonusBall(Lotto winningLotto) {
+    private Optional<BonusBall> inputBonusBall(Lotto winningLoto) {
         try {
-            return Optional.of(new BonusBall(InputView.getNumberInput(OutputView.INPUTVIEW_GET_BONUS_MESSAGE), winningLotto));
+            int bonusNumber = InputView.getNumberInput(OutputView.INPUTVIEW_GET_BONUS_MESSAGE);
+            winningLoto.validateBonusNumber(bonusNumber);
+            return Optional.of(new BonusBall(bonusNumber));
         } catch (IllegalArgumentException e) {
             OutputView.printMessage(e.getMessage());
             return Optional.empty();
