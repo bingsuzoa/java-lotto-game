@@ -11,6 +11,7 @@ import domain.lottos.Lottos;
 import domain.lottos.Rank;
 import domain.money.Money;
 
+import java.util.List;
 import java.util.Map;
 
 public class LottoService {
@@ -24,6 +25,7 @@ public class LottoService {
     }
 
     public static final String INSUFFICIENT_LOTTO_PRICE = "로또를 구매할 수 있는 최소 금액이 모자랍니다.";
+    public static final String INSUFFICIENT_MANUAL_LOTTO_PRICE = "수동으로 구매할 수 있는 로또 갯수가 초과됩니다.";
 
     private final LottoMachine lottoMachine;
     private final LottoPricePolicy lottoPricePolicy;
@@ -35,8 +37,19 @@ public class LottoService {
         }
     }
 
-    public PurchaseResult purchaseLottos(Money money) {
-        return lottoMachine.buyLottos(money, lottoPricePolicy.getLottoPrice());
+    public void checkManualBuy(Money money, int manualLottoCount) {
+        int lottoPrice = lottoPricePolicy.getLottoPrice();
+        if (money.getMoney() < manualLottoCount * lottoPrice) {
+            throw new IllegalArgumentException(INSUFFICIENT_MANUAL_LOTTO_PRICE);
+        }
+    }
+
+    public PurchaseResult purchaseAutoLottosOnly(Money money) {
+        return lottoMachine.buyAutoLottosOnly(money, lottoPricePolicy.getLottoPrice());
+    }
+
+    public PurchaseResult purchaseMixedLottos(List<Lotto> manualLottos, Money money) {
+        return lottoMachine.buyMixedLottos(money, manualLottos, lottoPricePolicy.getLottoPrice());
     }
 
     public LottoStatistics getResultStatistics(Lottos lottos, Lotto winningLotto, BonusBall bonusBall) {

@@ -1,9 +1,9 @@
 package domain.lotto;
 
-public class BonusBall{
+public class BonusBall {
 
     public BonusBall(int bonusBall) {
-        if(bonusBall < LottoRule.MIN_NUMBER.value() || bonusBall > LottoRule.MAX_NUMBER.value()) {
+        if (bonusBall < LottoRule.MIN_NUMBER.value() || bonusBall > LottoRule.MAX_NUMBER.value()) {
             throw new IllegalArgumentException(INVALID_BONUS_BALL_RANGE);
         }
         this.bonusBall = bonusBall;

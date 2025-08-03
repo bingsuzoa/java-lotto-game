@@ -17,6 +17,10 @@ public class Money {
     }
 
     public int getChange(int lottoCount, int lottoPrice) {
-        return money - lottoCount * lottoPrice;
+        int change = money - (lottoCount * lottoPrice);
+        if(change <= 0) {
+            return 0;
+        }
+        return change;
     }
 }
