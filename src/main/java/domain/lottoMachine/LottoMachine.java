@@ -17,9 +17,9 @@ public class LottoMachine {
     private final LottoNumberGenerator numberGenerator;
 
     public PurchaseResult buyAutoLottosOnly(Money money, int lottoPrice) {
-        int lottoCount = money.getMoney() / lottoPrice;
-        Lottos lottos = issue(lottoCount);
-        return new PurchaseResult(lottos, money.getChange(lottoCount, lottoPrice));
+        int autoCount = money.getMoney() / lottoPrice;
+        Lottos lottos = issue(autoCount);
+        return new PurchaseResult(0, autoCount, lottos, money.getChange(autoCount, lottoPrice));
     }
 
     public PurchaseResult buyMixedLottos(Money money, List<Lotto> manualLottos, int lottoPrice) {
@@ -33,7 +33,7 @@ public class LottoMachine {
         for (int i = 0; i < autoLottoCount; i++) {
             lottos.add(new Lotto(numberGenerator.generate()));
         }
-        return new PurchaseResult(new Lottos(lottos), money.getChange(manualLottos.size() + autoLottoCount, lottoPrice));
+        return new PurchaseResult(manualLottos.size(), autoLottoCount, new Lottos(lottos), money.getChange(manualLottos.size() + autoLottoCount, lottoPrice));
     }
 
     private Lottos issue(int ticketCount) {
