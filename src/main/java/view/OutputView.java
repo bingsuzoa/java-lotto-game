@@ -11,7 +11,6 @@ public class OutputView {
     public static final String INPUTVIEW_GET_MONEY_MESSAGE = "구입금액을 입력해 주세요.";
     public static final String INPUTVIEW_GET_BONUS_MESSAGE = "보너스 볼을 입력해 주세요.";
     public static final String INPUTVIEW_INVALID_GET_MONEY_TYPE = "구입금액은 숫자만 입력가능합니다.";
-    public static final String PURCHASE_RESULT_MESSAGE = "개를 구매했습니다.";
     public static final String LAST_WEEK_WINNING_NUMBERS_MESSAGE = "지난 주 당첨 번호를 입력해 주세요.";
     public static final String INPUTVIEW_MANUAL_LOTTO_COUNT = "수동으로 구매할 로또 수를 입력해 주세요.";
     public static final String INPUTVIEW_MANUAL_LOTTO_NUMBERS = "수동으로 구매할 번호를 입력해 주세요.";
@@ -22,8 +21,8 @@ public class OutputView {
     }
 
     public static void printLottos(PurchaseResult purchaseResult) {
-        int lottoCount = purchaseResult.getLottoCount();
-        System.out.println(lottoCount + PURCHASE_RESULT_MESSAGE);
+        System.out.println("수동으로 " + purchaseResult.manualCount() + "장, 자동으로 "
+                + purchaseResult.autoCount() + "개를 구매했습니다.");
         System.out.println(purchaseResult.getFormattedString());
     }
 
