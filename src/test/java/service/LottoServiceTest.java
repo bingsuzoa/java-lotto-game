@@ -4,7 +4,6 @@ import domain.lotto.BonusBall;
 import domain.lotto.Lotto;
 import domain.lotto.lottoPricePolicy.FixedLottoPricePolicy;
 import domain.lotto.lottoPricePolicy.LottoPricePolicy;
-import domain.lottoMachine.LottoMachine;
 import domain.lottoMachine.PurchaseResult;
 import domain.lottoNumberGenerator.LottoNumberGenerator;
 import domain.lottoNumberGenerator.RandomNumberGenerator;
@@ -17,6 +16,7 @@ import org.junit.jupiter.api.Test;
 import java.util.List;
 
 import static service.LottoService.INSUFFICIENT_LOTTO_PRICE;
+import static service.LottoService.INSUFFICIENT_MANUAL_LOTTO_PRICE;
 
 public class LottoServiceTest {
 
@@ -27,10 +27,18 @@ public class LottoServiceTest {
     @Test
     @DisplayName("돈을 주면 로또와 거스름돈을 주는지 확인")
     void 로또_구매() {
-        PurchaseResult purchaseResult = lottoService.purchaseLottos(new Money(14500));
+        PurchaseResult purchaseResult = lottoService.purchaseAutoLottosOnly(new Money(14500));
         Assertions.assertEquals(purchaseResult.getLottoCount(), 14);
         Assertions.assertEquals(purchaseResult.change(), 500);
     }
+
+    @Test
+    @DisplayName("수동 구매할 수 있는 금액인지 확인")
+    void 수동_구매() {
+        int manualLottoCount = 1;
+        lottoService.checkManualBuy(new Money(1000), manualLottoCount);
+    }
+
 
     @Test
     @DisplayName("수익률 확인")
@@ -66,8 +74,18 @@ public class LottoServiceTest {
     @DisplayName("로또 구매할 수 있는 최소 금액이 안되면 예외 발생")
     void 로또_구매_최소_금액_미달시_예외() {
         IllegalArgumentException e = Assertions.assertThrows(IllegalArgumentException.class, () -> {
-            lottoService.validateSufficientMoney(new Money(lottoService.getLottoPrice() -1));
+            lottoService.validateSufficientMoney(new Money(lottoService.getLottoPrice() - 1));
         });
         Assertions.assertEquals(e.getMessage(), INSUFFICIENT_LOTTO_PRICE);
+    }
+
+    @Test
+    @DisplayName("수동 구매불가한 경우 예외 발생")
+    void 수동_구매_예외_발생() {
+        int manualLottoCount = 2;
+        IllegalArgumentException e = Assertions.assertThrows(IllegalArgumentException.class, () -> {
+            lottoService.checkManualBuy(new Money(1000), manualLottoCount);
+        });
+        Assertions.assertEquals(e.getMessage(), INSUFFICIENT_MANUAL_LOTTO_PRICE);
     }
 }
