@@ -16,10 +16,24 @@ public class LottoMachine {
 
     private final LottoNumberGenerator numberGenerator;
 
-    public PurchaseResult buyLottos(Money money, int lottoPrice) {
+    public PurchaseResult buyAutoLottosOnly(Money money, int lottoPrice) {
         int lottoCount = money.getMoney() / lottoPrice;
         Lottos lottos = issue(lottoCount);
         return new PurchaseResult(lottos, money.getChange(lottoCount, lottoPrice));
+    }
+
+    public PurchaseResult buyMixedLottos(Money money, List<Lotto> manualLottos, int lottoPrice) {
+        int autoLottoCount = (money.getMoney() / lottoPrice) - manualLottos.size();
+
+        List<Lotto> lottos = new ArrayList<>();
+
+        for (Lotto lotto : manualLottos) {
+            lottos.add(lotto);
+        }
+        for (int i = 0; i < autoLottoCount; i++) {
+            lottos.add(new Lotto(numberGenerator.generate()));
+        }
+        return new PurchaseResult(new Lottos(lottos), money.getChange(manualLottos.size() + autoLottoCount, lottoPrice));
     }
 
     private Lottos issue(int ticketCount) {

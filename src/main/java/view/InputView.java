@@ -8,6 +8,7 @@ public class InputView {
     private static final Scanner scanner = new Scanner(System.in);
     private static final String INVALID_INPUT = "입력 형태가 올바르지 않습니다. 숫자 사이에 [,]의 입력만 가능합니다. ";
 
+
     public static int getNumberInput(String inputMessage) {
         int invalidNumberInput = -1;
         try {
@@ -22,8 +23,7 @@ public class InputView {
         }
     }
 
-    public static String getLastWeekWinnings() throws IllegalArgumentException {
-        OutputView.printMessage(OutputView.LAST_WEEK_WINNING_NUMBERS_MESSAGE);
+    public static String getManualLottoNumbers() throws IllegalArgumentException {
         String lastWeekWinnings = scanner.nextLine();
         isValidLottoNumbers(lastWeekWinnings);
         return lastWeekWinnings;
